@@ -1,0 +1,27 @@
+<div class="container-fluid pr-5 pl-5">
+    <div class="row">
+        {% for item in content|sort(attribute=sort_on, reverse=rev) %}
+            <div class="col-lg-3 d-flex align-items-stretch justify-content-center">
+                <div class="card">
+                    <div class="imghover">
+                        <a href="{{url_for('perspectives.item_page', id=item.id)}}">
+                            <img src="{{url_for('static', filename='resized_images/'+item.filename)}}" class="img-responsive img-thumbnail">
+                        </a>
+                    </div>
+                    {% if item.exclusive == 1 %} 
+                        <div class="bg-exclusive text-center text-dark font-weight-bold rounded" style="font-family: 'Lucida Handwriting', 'Courier New', cursive;">Exclusive</div>
+                    {% endif %}
+                    <div class="card-body">
+                        <h6 class="text-muted font-style-italic">{{item.item_type}}</h6>
+                        <a href="{{url_for('perspectives.item_page', id=item.id)}}"><h5 class="text-color-main font-weight-bold">{{item.name}}</h5></a>
+                        <p class="text-muted"><b>{{item.env_impact}}kg</b> of CO<sub>2</sub></p>
+
+                        <span class="font-weight-bold price">£{{"%.2f"|format(item.price)}}</span>
+                        {% include '/includes/addtobasket.html' %}
+                    </div>
+                    {% include '/includes/checkstock.html' %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}
+My orders
+{% endblock %}
+
+{% block info %}
+{% include "/includes/navbar.html" %}
+{% include "/includes/flashhandle.html" %}
+{% if content|length > 0 %}
+    <div class="container mt-5">
+        <h1>My orders</h1>
+    </div>
+    {% for order in content %} 
+
+        <div class="container my-5 table-responsive">
+            <h3>{{order.datetime}}<span class="pull-right"><h5 class="font-weight-bold">Receipt #{{order.id}}</h5></span></h3>
+            <table class="table border table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order.order_json %}
+                        <tr class="clickable-row" data-href="{{url_for('perspectives.item_page', id=item)}}">
+                            <th scope="row">{{loop.index}}</th>
+                            <td>{{order.order_json[item]["name"]}}</td>
+                            <td>{{order.order_json[item]["quantity"]}}</td>
+                            <td>£{{"%.2f"|format(order.order_json[item]["price"])}}</td>
+                            <td>£{{"%.2f"|format(order.order_json[item]["quantity"]|int * order.order_json[item]["price"])}}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <th>Total:</th>
+                        <td class="text-danger font-weight-bold">£{{"%.2f"|format(order.total)}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+    {% endfor %} 
+{% else %} 
+    <div class="container text-center mt-5">
+        <h1>You are yet to buy anything.</h1>
+        <a class="font-weight-bold direct" href="/">Click to shop</a>
+    </div>
+{% endif %}
+
+{% endblock %}

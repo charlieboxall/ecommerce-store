@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% set sort_on = request.args.sort_on|default(sort_type) %}
+{% if sort_type == "id" %} 
+    {% set rev = true %}
+{% else %}
+    {% set rev = false %}
+{% endif %} 
+
+{% block title %}
+Home
+{% endblock %}
+
+{% block info %}
+{% include "/includes/navbar.html" %}
+{% include "/includes/flashhandle.html" %}
+<div class="container text-center my-5">
+    <h1 class="italic title">
+		<span class="everything">Everything</span>
+		<span class="f1">
+			<span class="f">F</span><span class="one">1</span>
+		</span>
+	</h1>
+</div>
+
+{% include "/includes/cardhrefs.html" %}
+
+<div class="container" id="exclusive">
+    <br><hr><br>
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="pt-2 pr-3 pl-3">
+            <h2 class="font-weight-bold italic">Exclusive Products</h2>
+        </div>
+    </div>
+</div>
+
+{% if content2 %}
+    <div class="container-fluid pr-5 pl-5">
+        <div class="row">
+            {% for item in content2 %}
+                <div class="col-lg-3 d-flex align-items-stretch justify-content-center">
+                    <div class="card">
+                        <div class="imghover">
+                            <a href="{{url_for('perspectives.item_page', id=item.id)}}">
+                                <img src="{{url_for('static', filename='resized_images/'+item.filename)}}" class="img-responsive img-thumbnail">
+                            </a>
+                        </div>
+                        {% if item.exclusive == 1 %} 
+                            <div class="bg-exclusive text-center text-dark font-weight-bold rounded" style="font-family: 'Lucida Handwriting', 'Courier New', cursive;">Exclusive</div>
+                        {% endif %}
+                        <div class="card-body">
+                            <h6 class="text-muted font-style-italic">{{item.item_type}}</h6>
+                            <a href="{{url_for('perspectives.item_page', id=item.id)}}"><h5 class="text-color-main font-weight-bold">{{item.name}}</h5></a>
+                            <p class="text-muted"><b>{{item.env_impact}}kg</b> of CO<sub>2</sub></p>
+        
+                            <span class="font-weight-bold price">£{{"%.2f"|format(item.price)}}</span>
+                            {% include '/includes/addtobasket.html' %}
+                        </div>
+                        {% include 'includes/checkstock.html' %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %} 
+        <h1 class="container">Nothing to see here...</h1>
+{% endif %}
+
+{% include "/includes/banner.html" %}
+
+<div class="container" id="new">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="pt-2 pr-3 pl-3">
+            <h2 class="font-weight-bold italic">New Arrivals</h2>
+        </div>
+    </div>
+</div>
+{% if content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm"></div><div class="col-sm"></div>
+            <div class="col-sm">{% include "/includes/sort.html" %}</div>
+            <div class="col-sm"></div><div class="col-sm"></div>
+        </div>
+    </div>
+
+    {% include "/includes/baseitems.html" %}
+{% else %} 
+    <h1 class="container">Nothing to see here...</h1>
+{% endif %}
+
+<div class="container">
+    <br>
+    <footer class="border-top border-dark text-center">
+        <p style="font-style: italic;">Used to set up <span class="text-danger">directory structure</span> : https://www.youtube.com/watch?v=dam0GPOAvVI&ab_channel=TechWithTim</p>
+    </footer>
+</div>
+{% endblock %}

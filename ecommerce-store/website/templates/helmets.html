@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% set sort_on = request.args.sort_on|default(sort_type) %}
+{% set rev = false %}
+
+{% block title %}
+Helmets
+{% endblock %}
+
+{% block info %}
+{% include "/includes/navbar.html" %}
+{% include "/includes/flashhandle.html" %}
+{% include "/includes/banner.html" %}
+<div class="container" id="new">
+    <div class="h-100 d-flex align-items-center justify-content-center">
+        <div class="pt-2 pr-3 pl-3">
+            <h2 class="font-weight-bold italic">Helmets</h2>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm"></div><div class="col-sm"></div>
+        <div class="col-sm">{% include "/includes/sort.html" %}</div>
+        <div class="col-sm"></div><div class="col-sm"></div>
+    </div>
+</div>
+{% include "/includes/baseitems.html" %}
+{% endblock %}

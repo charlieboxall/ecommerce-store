@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+
+{% block title %}
+Admin
+{% endblock %}
+
+{% block info %}
+{% include "/includes/navbar.html" %}
+{% include "/includes/flashhandle.html" %}
+<br><br>
+
+<div class="container mt-4 d-flex justify-content-center">
+    <div class="card" id="checkout-card">
+        <div class="px-3 pt-4">
+            <div>
+                <div class="pull-right">
+                    <span class="total">Upload Item</span>
+                </div>
+            </div>
+        </div>
+        <form method="post" enctype="multipart/form-data">
+            <div class="row px-3 pt-3">
+                <div class="col-sm">
+                    <label>Name*</label>
+                    <input type="text" 
+                    class="form-control"                                        
+                    id="name"
+                    name="name"
+                    required>
+                </div>
+                <div class="col-sm">
+                    <label>Price*</label>
+                    <input type="text" 
+                    class="form-control"                                
+                    id="price"
+                    name="price"
+                    required>
+                </div>
+            </div>
+
+            <div class="row px-3 pt-3">
+                <div class="col-sm">
+                    <label>Environmental impact*</label>
+                    <input type="text" 
+                    class="form-control"                                        
+                    id="env_impact"
+                    name="env_impact"
+                    required>
+                </div>
+                <div class="col-sm">
+                    <label>Stock*</label>
+                    <input type="number" 
+                    class="form-control"                                
+                    id="stock"
+                    name="stock"
+                    required>
+                </div>
+            </div>
+
+            <div class="px-3 pt-3">
+                <label>Description*</label>
+                <input type="text" 
+                class="form-control"                                
+                id="desc"
+                name="desc"
+                required>
+            </div>
+
+            <div class="row px-3 pt-3">
+                <div class="col-sm">
+                    <label>Item type*</label>
+                    <select id="item_type" class="form-control" name="item_type" required>
+                        <option value="">Item Type</option>
+                        <option value="Model Car">Model Car</option>
+                        <option value="Helmet">Helmet</option>
+                        <option value="Clothing">Clothing</option>
+                    </select>
+                </div>
+                <div class="col-sm">
+                    <label>Exclusivity*</label>
+                    <select id="exclusive" class="form-control" name="exclusive" required>
+                        <option value="0">False</option>
+                        <option value="1">True</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row px-3 pt-3">
+                <div class="col-sm">
+                    <label>Image*</label>
+                    <input type="file" class="form-control" id="file" name="file" required>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-between px-3 py-4">
+                <div>
+                    <a href="/">
+                        <button type="button" class="btn"><span class="bi-x"></span></button>
+                    </a>
+                </div>
+                <div>
+                    <button type="submit" class="btn" id="purchase"><span class="bi-check2-square"></span></button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-responsive">
+    <thead>
+        <th>id</th>
+        <th>name</th>
+        <th>item_type</th>
+        <th>price</th>
+        <th>env_impact</th>
+        <th>desc</th>
+        <th>filename</th>
+        <th>stock</th>
+        <th>exclusive</th>
+    </thead>
+    <tbody>
+        {% for item in content %} 
+            <tr>
+                <th>{{item.id}}</th>
+                <th>{{item.name}}</th>
+                <th>{{item.item_type}}</th>
+                <th>{{item.price}}</th>
+                <th>{{item.env_impact}}</th>
+                <th>{{item.desc}}</th>
+                <th>{{item.filename}}</th>
+                <th>{{item.stock}}</th>
+                <td>{{item.exclusive}}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %} 

@@ -1,0 +1,83 @@
+<!-- so: Base navbar for all pages -->
+<nav class="navbar navbar-expand-lg navbar-custom pt-3 pb-3 sticky-top boxshadow">
+
+    <!-- so: Navbar toggler -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" 
+    data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false">
+        <i class="fa fa-navicon text-color-main" style="font-size:28px;"></i>
+    </button>
+    <!-- eo: Navbar toggler -->
+
+    <!-- so: Navbar header -->
+    <div class="pr-5">
+        <div class="navbar-header bg-logo bg-main">
+            <a class="navbar-brand font-weight-bold" href="/">EVERYTHING F1</a>
+        </div>
+    </div>
+
+    <!-- so: Nav bar items -->
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a href="/allitems" class="nav-link text-color-main">ITEM GALLERY</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/model_cars" class="nav-link text-color-main">MODEL CARS</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/helmets" class="nav-link text-color-main">HELMETS</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/clothes" class="nav-link text-color-main">CLOTHING</a>
+            </li>
+
+            <li class="nav-item">
+                <a href="/basket" class="nav-link text-color-main"><span class="bi bi-cart"></span> ({{session["ItemBasket"]|length}})</a>
+            </li>
+
+            <!-- so: Log in/Register dropdown-->
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link dropdown-toggle text-color-main" id="navbarDropdown"
+                role="button" data-toggle="dropdown" aria-expanded="false">
+                    {% if user.is_authenticated %} 
+                        Hello, {{user.username}}
+                    {% else %} 
+                        Hello, log in
+                    {% endif %}
+                </a>
+                {% if user.is_authenticated %}
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropDown">
+                        <li class="border-bottom border-dark">
+                            <a href="/orders" class="dropdown-item">My orders</a>
+                        </li>
+                        <li>
+                            <a href="/logout" class="dropdown-item">Log out</a>
+                        </li>
+                        {% if user.is_authenticated %}
+                            {% if user.id == 1 %}
+                                <li class="border-top border-dark">
+                                    <a href="/admin" class="dropdown-item text-danger">Admin</a>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                        
+                    </ul>
+                {% else %}
+                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropDown">
+                        <li>
+                            <a href="/login" class="dropdown-item border-bottom border-dark">Log in</a>
+                        </li>
+                        <li >
+                            <small>New customer? &nbsp;<a href="/signup" class="direct">Register here.</a></small>
+                        </li>
+                    </ul>
+                {% endif %}
+            </li>
+            <!-- eo: Log in/Register dropdown-->
+        </ul>
+    </div>
+    <!-- eo: Nav bar items-->
+</nav>

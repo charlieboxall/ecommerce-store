@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}
+Basket
+{% endblock %}
+
+<!-- ./static/resized_images/alonso_car_2022.png -->
+
+{% block info %} 
+{% include "/includes/navbar.html" %} 
+{% include "/includes/flashhandle.html" %}
+<div class="container pr-5 pl-5">
+    {% if "ItemBasket" in session %}
+        {% if session["ItemBasket"]|length > 0 %}
+            {% for k, item in session["ItemBasket"].items() %}
+                {% if loop.index == 1 %}
+                    <div>
+                        <div class="card">
+                            <div class="card-body mt-2">
+                                <div class="row">
+                                    <div class="col-sm">
+                                        <span>£</span>
+                                        <span class="total">{{"%.2f"|format(TOTAL)}}</span>
+                                    </div>
+                                    <div class="col-sm">
+                                        <span class="pull-right mr-3 pt-2">
+                                            {% if success and out_of_stock_items|length == 0 %}
+                                                <a href="/checkout">
+                                                    <button class="btn-checkout">Checkout</button>
+                                                </a>
+                                            {% else %} 
+                                                <button class="btn-checkout bg-danger border-0" disabled>Checkout</button>
+                                            {% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                    <h1>Your Basket</h1>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm">
+                        <div class="card">
+                            <div class="card-body">
+                                {% if (not success) and (item.id in out_of_stock_items) and (item.stock == 0) %}
+                                    <div class="bg-sold-out text-center text-light font-weight-bold rounded">Sold Out</div>
+                                {% elif (not success) and (item.id in out_of_stock_items) and (item.stock - item.quantity|int < 0) %} 
+                                    <div class="bg-sold-out text-center text-light font-weight-bold rounded">Quantity exceeds stock</div>
+                                {% elif item.stock < 10 %} 
+                                    <div class="bg-last-few text-center text-light font-weight-bold rounded">Last few!</div>
+                                {% else %} 
+                                    <div class="bg-in-stock text-center text-light font-weight-bold rounded">In Stock</div>
+                                {% endif %}
+                                <br>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <h5 class="card-title">{{item.name}}</h5>
+                                        <p class="card-text font-weight-bold price">£{{"%.2f"|format(item.price)}}</p>
+                                        <p class="card-text font-weight-bold text-danger">Subtotal: £{{"%.2f"|format(item.quantity|int * item.price)}}</p>
+                                        <form action="{{url_for('perspectives.update_basket')}}" method="post">
+                                            <input type="hidden" name="item_id" value="{{item.id}}">
+                                            <input type="number" value="{{item.quantity}}" name="quantity" min="1" max="{{item.stock}}" style="max-width: 60px;">
+                                            <button class="btn"><span class="bi-check2-square"></button>
+                                        </form>
+                                        <br>
+                                        <form action="{{url_for('perspectives.remove_item')}}" method="post">
+                                            <input type="hidden" name="item_id" value="{{item.id}}">
+                                            <button class="btn">
+                                                <span class="bi-trash"></span>
+                                            </button>
+                                        </form>
+                                    </div>
+                                    <div class="col-sm-6 text-right">
+                                        <a href="{{url_for('perspectives.item_page', id=item.id)}}">
+                                            <img class="img-responsive" src="{{url_for('static', filename='resized_images/'+item.filename)}}" width="200px">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %} 
+        {% else %}
+            <div class="container text-center mt-5">
+                <h1>Your Basket is empty.</h1>
+                <a class="font-weight-bold direct" href="/">Click to shop</a>
+            </div>
+            {% include "/includes/cardhrefs.html" %}
+        {% endif %}
+    {% else %}
+        <div class="container text-center mt-5">
+            <h1>Your Basket is empty.</h1>
+            <a class="font-weight-bold direct" href="/">Click to shop</a>
+            {% include "/includes/cardhrefs.html" %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

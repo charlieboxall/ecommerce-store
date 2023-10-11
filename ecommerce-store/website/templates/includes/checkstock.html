@@ -1,0 +1,9 @@
+{% if item.stock == 0 %}
+    <div class="card-header bg-sold-out text-center text-light font-weight-bold rounded">Sold Out</div>
+{% elif item.id|string in session["ItemBasket"] %} 
+    <div class="card-header bg-in-basket text-center text-light font-weight-bold rounded">In Basket ({{session["ItemBasket"][item.id|string]['quantity']}})</div>
+{% elif item.stock < 10 %} 
+    <div class="card-header bg-last-few text-center text-light font-weight-bold rounded">Last few!</div>
+{% else %} 
+    <div class="card-header bg-in-stock text-center text-light font-weight-bold rounded">In Stock</div>
+{% endif %}

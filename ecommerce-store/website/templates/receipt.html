@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}       
+Receipt
+{% endblock %}
+
+{% block info %}
+{% include "/includes/navbar.html" %}
+{% include "/includes/flashhandle.html" %}
+{% include "/includes/banner.html" %}
+{% if success %}
+    <div class="container my-5 table-responsive">
+        <h1>Your Receipt<span><h5 class="font-weight-bold">Receipt #{{order_num}}</h5></span></h1>
+        <table class="table border">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Name</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Subtotal</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for k, item in session["Receipt"].items() %}
+                    <tr>
+                        <th scope="row">{{loop.index}}</th>
+                        <td>{{item.name}}</td>
+                        <td>{{item.quantity}}</td>
+                        <td>£{{"%.2f"|format(item.price)}}</td>
+                        <td>£{{"%.2f"|format(item.quantity|int * item.price)}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <table class="table table-borderless">
+            <thead>
+                <th scope="col">Total</th>
+                <th scope="col" class="pull-right">Date</th>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>£{{"%.2f"|format(TOTAL)}}</td>
+                    <td class="pull-right">{{datetime}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+{% else %} 
+    <div class="container text-center mt-5">
+        <h1>Something went wrong.</h1>
+        <a class="font-weight-bold direct" href="/basket">Return to basket.</a>
+    </div>
+{% endif %}
+{% endblock %}

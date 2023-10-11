@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{item.name}}
+{% endblock %}
+
+{% block info %}
+{% include "/includes/navbar.html" %}
+{% include "/includes/flashhandle.html" %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-5">
+            {% if item.exclusive == 1 %} 
+                <div class="bg-exclusive text-center text-dark font-weight-bold rounded" style="font-family: 'Lucida Handwriting', 'Courier New', cursive;">Exclusive</div>
+            {% endif %}
+            <img src="{{url_for('static', filename='resized_images/'+item.filename)}}" class="img-responsive img-thumbnail">
+            {% include '/includes/checkstock.html' %}
+        </div>
+
+        <div class="col-md-5">
+            <h3>{{item.name}}</h3>
+            <hr>
+            <h4>£{{"%.2f"|format(item.price)}}</h4>
+            <h5><b>{{item.env_impact}}kg</b> of CO<sub>2</sub></h5>
+            <p>{{item.desc}}</p>
+            {% include '/includes/addtobasket.html' %}
+
+        </div>
+    </div>
+    <hr>
+</div>
+
+{% endblock %}

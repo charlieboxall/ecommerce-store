@@ -1,0 +1,13 @@
+<form class="pull-right" action="{{url_for('perspectives.add_basket')}}" method="post">
+    <input type="hidden" name="item_id" value="{{item.id}}">
+    {% if item.stock == 0 %}
+        <input type="number" name="quantity" value="0" max="{{item.stock}}" disabled style="max-width: 60px;">
+        <button class="btn" disabled><span class="bi bi-cart-x"></span></button>
+    {% elif item.id|string in session["ItemBasket"] %}
+        <input type="number" name="quantity" value="0" max="{{item.stock}}" disabled style="max-width: 60px;">
+        <button class="btn" disabled><span class="bi bi-cart-check"></span></button>
+    {% else %}
+        <input type="number" name="quantity" value="1" min="1" max="{{item.stock}}" style="max-width: 60px;">
+        <button type="submit" class="btn"><span class="bi bi-cart"></span></button>
+    {% endif %}
+</form>
